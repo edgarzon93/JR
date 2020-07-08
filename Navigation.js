@@ -1,6 +1,9 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ActivityIndicator } from 'react-native';
 import { Button, Divider, Icon, List, ListItem, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+
+
+
 
 const BackIcon = (props) => (
   <Icon {...props} name='arrow-back'/>
@@ -10,26 +13,22 @@ const SettingsIcon = (props) => (
   <Icon {...props} name='settings'/>
 );
 
-const data = [
-  {
-    nombre:"Gaseosa",
-    precio:"1.500"
-  },
-  {
-    nombre:"Papas",
-    precio:"2.000"
-  },
-  {
-    nombre:"Chocorramo",
-    precio:"3.000"
-  },
-  {
-    nombre:"Nucita",
-    precio:"500"
-  }
-]
 
 export const TopNavigationDividerShowcase = () => {
+
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  fetch('http://localhost:3000/productos')
+    .then((response) => response.json())
+    .then((json) => {  
+      setData(json.body)
+      console.log(data)
+      setLoading(false)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   const renderSettingsAction = () => (
     <TopNavigationAction icon={SettingsIcon}/>
@@ -43,6 +42,21 @@ export const TopNavigationDividerShowcase = () => {
     <Icon {...props} name='shopping-cart-outline'/>
   );
 
+  const actualizar = () =>{
+    setData([])
+    setLoading(true)
+    fetch('http://localhost:3000/productos')
+    .then((response) => response.json())
+    .then((json) => {  
+      setData(json.body)
+      console.log(data)
+      setLoading(false)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
+  }
 
 
   const selected = (props) => {
@@ -62,17 +76,23 @@ export const TopNavigationDividerShowcase = () => {
 
   return (
     <React.Fragment>
-      <TopNavigation
-        title=''
-        accessoryLeft={renderBackAction}
-        accessoryRight={renderSettingsAction}
-      />
-      <Divider/>
-      <List
-        style={styles.container}
-        data={data}
-        renderItem={renderItem}
-      />
+      {isLoading?<ActivityIndicator/>:(
+        <>
+          <TopNavigation
+            title=''
+            accessoryLeft={renderBackAction}
+            accessoryRight={renderSettingsAction}
+          />
+          <Divider />
+          <List
+            style={styles.container}
+            data={data}
+            renderItem={renderItem}
+          />
+
+          <Button onPress={actualizar}>Actualizar</Button>
+        </>
+      )}
     </React.Fragment>
   );
 };
