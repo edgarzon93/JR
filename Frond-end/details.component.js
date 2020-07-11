@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { ModalProducts } from './Modal'
+
 
 const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />
@@ -21,8 +21,8 @@ export const DetailsScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TopNavigation title='Products' alignment='center' accessoryLeft={BackAction}/>
-       <ModalProducts />
+      <TopNavigation title='Compra' alignment='center' accessoryLeft={BackAction}/>
+   
     </SafeAreaView>
   );
 };

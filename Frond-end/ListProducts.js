@@ -22,7 +22,9 @@ export const ListProducts = () => {
   const [isLoading, setLoading] = useState(true);
   const [visible, setVisible] = React.useState(false);
   const [quantity, setQuantity] = React.useState('');
-  const [title, setTitle] = useState('hola')
+  const [title, setTitle] = useState('');
+  const [item, setItem] = useState({});
+  const [carrito, setcarrito] = useState([]);
 
 
   if (isLoading) {
@@ -37,14 +39,6 @@ export const ListProducts = () => {
         console.error(error);
       });
   }
-
-  const renderSettingsAction = () => (
-    <TopNavigationAction icon={SettingsIcon} />
-  );
-
-  const renderBackAction = () => (
-    <TopNavigationAction icon={BackIcon} />
-  );
 
   const renderItemAccessory = (props) => (
     <Icon {...props} name='shopping-cart-outline' />
@@ -63,6 +57,7 @@ export const ListProducts = () => {
       .catch((error) => {
         console.error(error);
       });
+      console.log(carrito)
 
   }
 
@@ -70,14 +65,24 @@ export const ListProducts = () => {
   const selected = (item) => (
     setVisible(true),
     console.log(item),
-    setTitle(item.nombre)
+    setTitle(item.nombre),
+    setItem(item)
     
 
   );
 
-
-    
+  const SendOrden = (cda) =>{    
   
+    let dato = item 
+    dato.quantity=cda.quantity 
+    let arr = [...carrito, dato]
+    setcarrito(arr)
+    setVisible(false) 
+    setQuantity('')   
+    return
+    
+    
+  }
 
   const renderItem = ({ item }) => (
 
@@ -94,10 +99,9 @@ export const ListProducts = () => {
     <React.Fragment>
       {isLoading ? <ActivityIndicator /> : (
         <>
-          <TopNavigation
-            title='Productos'
-            accessoryLeft={renderBackAction}
-            accessoryRight={renderSettingsAction}
+          <TopNavigation style={{textTransform:"uppercase"}}
+            title='Productos'  alignment='center'       
+            
           />
           <Divider />
           <List onPress={() => selected(item)}
@@ -108,21 +112,24 @@ export const ListProducts = () => {
 
           <Modal visible={visible}>
             <Card style={[styles2.Modal, { backgroundColor: "#AAC2F4"}]} level='1' disabled={true}>
-            <Text style={{color:"white", textTransform:"uppercase"}}>{title}</Text>   
+            <Text style={{color:"black", textTransform:"uppercase", marginBottom:10}}>{title}</Text>   
              
-              <Input style={{borderRadius: 10, margin:10}}
+              <Input style={{borderRadius: 10, margin:15}}
                 placeholder='Cantidad'
                 value={quantity}
                 onChangeText={nextValue => setQuantity(nextValue)}
               />
+
+            <Text style={{color:"black", textTransform:"uppercase", marginBottom:15, textAlign:"center"}}>${item.precio}</Text> 
              <View style={{display:"flex", flexDirection:"row"}}>
-              <Button style={{flex:1, marginHorizontal:5}}  onPress={() => setVisible(false)}>
+              <Button style={{flex:1, marginHorizontal:5}} onPress={()=>SendOrden({quantity})}>
                 Acpetar
               </Button>
                <Button style={{flex:1, marginHorizontal:5}} onPress={() => setVisible(false)}>
                 Cancelar
               </Button>
               </View>
+               
             
 
             </Card>

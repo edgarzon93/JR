@@ -28,7 +28,7 @@ export const HomeScreen = ({ navigation }) => {
 
         <Divider />
         <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Button style={styles.button} onPress={navigateDetails}>Abrir tienda</Button>
+          <Button style={styles.button} onPress={navigateDetails}>Continuar compra</Button>
         </Layout>
       </SafeAreaView>
 
