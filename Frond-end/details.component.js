@@ -14,7 +14,7 @@ export const DetailsScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
   const [res, setRes] = React.useState(false);
   const [observaciones, setObservaciones] = useState('')
-
+  const [response, setResponse] = useState('')
   
 
   const navigateBack = () => {
@@ -36,18 +36,37 @@ export const DetailsScreen = ({ navigation }) => {
   )
   const finalizarCompra = () => { 
     setVisible(true)
-    let body = {
-      idCliente:1,
-      producto:GLOBAL.carrito,
-      observaciones:observaciones     
-    }
-    console.log(body)
-    return
   }
 
   const modalFinal = () => {
+
+    let body = {
+      idCliente:1,
+      productos:GLOBAL.carrito,
+      observaciones:observaciones     
+    }   
+    console.log(body)
+
     setVisible(false)
-    setRes(true)
+
+
+    fetch('http://ec2-18-191-194-92.us-east-2.compute.amazonaws.com:3000/tienda/compras',{
+      method:'POST',
+      body:body
+    })
+    .then((response) => {
+      console.log(response)
+      response.json()
+    })
+    .then((json) => {
+      console.log(json)
+      setResponse(json)
+      setRes(true)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
   }
  
 
@@ -69,7 +88,7 @@ export const DetailsScreen = ({ navigation }) => {
           <Input style={{borderRadius: 10, margin:15}}
                 placeholder='Observaciones'
                 value={observaciones}
-                onChangeText={nextValue => setQuantity(nextValue)}
+                onChangeText={nextValue => setObservaciones(nextValue)}
               />
           <Button onPress={modalFinal}>
             Aceptar
@@ -79,8 +98,7 @@ export const DetailsScreen = ({ navigation }) => {
 
       <Modal visible={res}>
         <Card disabled={true}>
-          <Text>Compra Realizada </Text>
-        
+          <Text>Compra Realizada </Text>          
           <Button onPress={() => setVisible(false)}>
             Aceptar
           </Button>

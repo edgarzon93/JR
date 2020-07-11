@@ -23,7 +23,7 @@ export const ListProducts = () => {
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [visible, setVisible] = React.useState(false);
-  const [quantity, setQuantity] = React.useState('');
+  const [cantidad, setcantidad] = React.useState('');
   const [title, setTitle] = useState('');
   const [item, setItem] = useState({});
   const [carrito, setcarrito] = useState([]);
@@ -79,11 +79,11 @@ export const ListProducts = () => {
   const SendOrden = (cda) =>{    
   
     let dato = item 
-    dato.quantity=cda.quantity 
+    dato.cantidad=cda.cantidad 
     let arr = [...carrito, dato]
     setcarrito(arr)
     setVisible(false) 
-    setQuantity('') 
+    setcantidad('') 
     GLOBAL.carrito = arr  
     console.log(arr)
     return
@@ -124,14 +124,14 @@ export const ListProducts = () => {
              
               <Input style={{borderRadius: 10, margin:15}}
                 placeholder='Cantidad'
-                value={quantity}
-                onChangeText={nextValue => setQuantity(nextValue)}
+                value={cantidad}
+                onChangeText={nextValue => setcantidad(nextValue)}
               />
 
             <Text style={{color:"black", textTransform:"uppercase", marginBottom:15, textAlign:"center"}}>${item.precio}</Text> 
 
              <View style={{display:"flex", flexDirection:"row"}}>
-              <Button style={{flex:1, marginHorizontal:5}} onPress={()=>SendOrden({quantity})}>
+              <Button style={{flex:1, marginHorizontal:5}} onPress={()=>SendOrden({cantidad})}>
                 Acpetar
               </Button>
                <Button style={{flex:1, marginHorizontal:5}} onPress={() => setVisible(false)}>
