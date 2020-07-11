@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ActivityIndicator, View} from 'react-native';
 import { Button, Divider, Icon, List, ListItem, TopNavigation, TopNavigationAction, Card, Modal, Text, useTheme, Input } from '@ui-kitten/components';
+import GLOBAL from './global'
 
 
 
@@ -25,10 +26,11 @@ export const ListProducts = () => {
   const [title, setTitle] = useState('');
   const [item, setItem] = useState({});
   const [carrito, setcarrito] = useState([]);
+  const [total, setTotal] = useState('')
 
 
   if (isLoading) {
-    fetch('http://localhost:3000/productos')
+    fetch('http://ec2-18-191-194-92.us-east-2.compute.amazonaws.com:3000/productos')
       .then((response) => response.json())
       .then((json) => {
         setData(json.body)
@@ -47,7 +49,7 @@ export const ListProducts = () => {
   const actualizar = () => {
     setData([])
     setLoading(true)
-    fetch('http://localhost:3000/productos')
+    fetch('http://ec2-18-191-194-92.us-east-2.compute.amazonaws.com:3000/productos')
       .then((response) => response.json())
       .then((json) => {
         setData(json.body)
@@ -78,9 +80,11 @@ export const ListProducts = () => {
     let arr = [...carrito, dato]
     setcarrito(arr)
     setVisible(false) 
-    setQuantity('')   
+    setQuantity('') 
+    GLOBAL.carrito = arr  
+    console.log(arr)
     return
-    
+        
     
   }
 
@@ -99,8 +103,8 @@ export const ListProducts = () => {
     <React.Fragment>
       {isLoading ? <ActivityIndicator /> : (
         <>
-          <TopNavigation style={{textTransform:"uppercase"}}
-            title='Productos'  alignment='center'       
+          <TopNavigation 
+            title='PRODUCTOS'  alignment='center'       
             
           />
           <Divider />
@@ -121,6 +125,7 @@ export const ListProducts = () => {
               />
 
             <Text style={{color:"black", textTransform:"uppercase", marginBottom:15, textAlign:"center"}}>${item.precio}</Text> 
+
              <View style={{display:"flex", flexDirection:"row"}}>
               <Button style={{flex:1, marginHorizontal:5}} onPress={()=>SendOrden({quantity})}>
                 Acpetar
@@ -128,14 +133,12 @@ export const ListProducts = () => {
                <Button style={{flex:1, marginHorizontal:5}} onPress={() => setVisible(false)}>
                 Cancelar
               </Button>
-              </View>
-               
+              </View>              
             
 
             </Card>
           </Modal>
 
-         
 
           <Button onPress={actualizar}>Actualizar</Button>
         </>
