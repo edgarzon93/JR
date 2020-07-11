@@ -12,6 +12,7 @@ const BackIcon = (props) => (
 export const DetailsScreen = ({ navigation }) => {
 
   const [visible, setVisible] = React.useState(false);
+  const [res, setRes] = React.useState(false);
   const [observaciones, setObservaciones] = useState('')
 
   
@@ -43,6 +44,11 @@ export const DetailsScreen = ({ navigation }) => {
     console.log(body)
     return
   }
+
+  const modalFinal = () => {
+    setVisible(false)
+    setRes(true)
+  }
  
 
   const BackAction = () => (
@@ -59,19 +65,29 @@ export const DetailsScreen = ({ navigation }) => {
       />
       <Modal visible={visible}>
         <Card disabled={true}>
-          <Text>Compra Realizada </Text>
+          <Text>Datos compras </Text>
           <Input style={{borderRadius: 10, margin:15}}
                 placeholder='Observaciones'
                 value={observaciones}
                 onChangeText={nextValue => setQuantity(nextValue)}
               />
+          <Button onPress={modalFinal}>
+            Aceptar
+          </Button>
+        </Card>
+      </Modal>
+
+      <Modal visible={res}>
+        <Card disabled={true}>
+          <Text>Compra Realizada </Text>
+        
           <Button onPress={() => setVisible(false)}>
             Aceptar
           </Button>
         </Card>
       </Modal>
 
-      <Button onPressIn={finalizarCompra}> Finalizar compra</Button>
+      <Button onPress={finalizarCompra}> Finalizar compra</Button>
    
     </SafeAreaView>
   );
