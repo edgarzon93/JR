@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-
+import GLOBAL from './global'
 
 const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />

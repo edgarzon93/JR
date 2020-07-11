@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ActivityIndicator, View} from 'react-native';
-import { Button, Divider, Icon, List, ListItem, TopNavigation, TopNavigationAction, Card, Modal, Text, useTheme, Input } from '@ui-kitten/components';
-
+import { Button,Layout ,Divider, Icon, List, ListItem, TopNavigation, TopNavigationAction, Card, Modal, Text, useTheme, Input } from '@ui-kitten/components';
+import GLOBAL from './global'
 
 
 const BackIcon = (props) => (
@@ -28,7 +28,7 @@ export const ListProducts = () => {
 
 
   if (isLoading) {
-    fetch('http://localhost:3000/productos')
+    fetch('http://ec2-18-191-194-92.us-east-2.compute.amazonaws.com:3000/productos')
       .then((response) => response.json())
       .then((json) => {
         setData(json.body)
@@ -45,9 +45,11 @@ export const ListProducts = () => {
   );
 
   const actualizar = () => {
+
+    console.log(GLOBAL)
     setData([])
     setLoading(true)
-    fetch('http://localhost:3000/productos')
+    fetch('http://ec2-18-191-194-92.us-east-2.compute.amazonaws.com:3000/productos')
       .then((response) => response.json())
       .then((json) => {
         setData(json.body)
@@ -79,6 +81,7 @@ export const ListProducts = () => {
     setcarrito(arr)
     setVisible(false) 
     setQuantity('')   
+    GLOBAL.carrito = arr
     return
     
     
@@ -99,7 +102,7 @@ export const ListProducts = () => {
     <React.Fragment>
       {isLoading ? <ActivityIndicator /> : (
         <>
-          <TopNavigation style={{textTransform:"uppercase"}}
+          <TopNavigation style={{}}
             title='Productos'  alignment='center'       
             
           />
