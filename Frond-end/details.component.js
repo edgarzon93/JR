@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { Icon, Layout, Text, TopNavigation, TopNavigationAction, Button, List, ListItem, Modal, Card } from '@ui-kitten/components';
-import GLOBAL, { carrito } from './global'
+import { Icon, Layout, Text, TopNavigation, TopNavigationAction, Button, List, ListItem, Modal, Card, Input} from '@ui-kitten/components';
+import GLOBAL from './global'
 import { set } from 'react-native-reanimated';
 
 
