@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ActivityIndicator, View} from 'react-native';
-import { Button,Layout ,Divider, Icon, List, ListItem, TopNavigation, TopNavigationAction, Card, Modal, Text, useTheme, Input } from '@ui-kitten/components';
+
+import { Button, Divider, Icon, List, ListItem, TopNavigation, TopNavigationAction, Card, Modal, Text, useTheme, Input } from '@ui-kitten/components';
 import GLOBAL from './global'
+
 
 
 const BackIcon = (props) => (
@@ -25,6 +27,7 @@ export const ListProducts = () => {
   const [title, setTitle] = useState('');
   const [item, setItem] = useState({});
   const [carrito, setcarrito] = useState([]);
+  const [total, setTotal] = useState('')
 
 
   if (isLoading) {
@@ -80,10 +83,11 @@ export const ListProducts = () => {
     let arr = [...carrito, dato]
     setcarrito(arr)
     setVisible(false) 
-    setQuantity('')   
-    GLOBAL.carrito = arr
+    setQuantity('') 
+    GLOBAL.carrito = arr  
+    console.log(arr)
     return
-    
+        
     
   }
 
@@ -102,8 +106,9 @@ export const ListProducts = () => {
     <React.Fragment>
       {isLoading ? <ActivityIndicator /> : (
         <>
-          <TopNavigation style={{}}
-            title='Productos'  alignment='center'       
+
+          <TopNavigation 
+            title='PRODUCTOS'  alignment='center'       
             
           />
           <Divider />
@@ -124,6 +129,7 @@ export const ListProducts = () => {
               />
 
             <Text style={{color:"black", textTransform:"uppercase", marginBottom:15, textAlign:"center"}}>${item.precio}</Text> 
+
              <View style={{display:"flex", flexDirection:"row"}}>
               <Button style={{flex:1, marginHorizontal:5}} onPress={()=>SendOrden({quantity})}>
                 Acpetar
@@ -131,14 +137,12 @@ export const ListProducts = () => {
                <Button style={{flex:1, marginHorizontal:5}} onPress={() => setVisible(false)}>
                 Cancelar
               </Button>
-              </View>
-               
+              </View>              
             
 
             </Card>
           </Modal>
 
-         
 
           <Button onPress={actualizar}>Actualizar</Button>
         </>
