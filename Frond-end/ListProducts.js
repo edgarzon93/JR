@@ -1,33 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, ActivityIndicator, View} from 'react-native';
-
 import { Button, Divider, Icon, List, ListItem, TopNavigation, TopNavigationAction, Card, Modal, Text, useTheme, Input } from '@ui-kitten/components';
 import GLOBAL from './global'
 
 
 
-const BackIcon = (props) => (
-  <Icon {...props} name='arrow-back' />
-);
-
-const SettingsIcon = (props) => (
-  <Icon {...props} name='settings' />
-);
-
-
 export const ListProducts = () => {
 
-    const theme = useTheme();
+  const theme = useTheme();
 
   
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [visible, setVisible] = React.useState(false);
-  const [cantidad, setcantidad] = React.useState('');
+  const [cantidad, setcantidad] = React.useState(1);
   const [title, setTitle] = useState('');
   const [item, setItem] = useState({});
   const [carrito, setcarrito] = useState([]);
-  const [total, setTotal] = useState('')
+  const [total, setTotal] = useState()
 
 
   if (isLoading) {
@@ -69,27 +59,31 @@ export const ListProducts = () => {
 
   const selected = (item) => (
     setVisible(true),
-    console.log(item),
     setTitle(item.nombre),
-    setItem(item)
+    setItem(item),
+    setTotal(item.precio)
     
 
   );
 
-  const SendOrden = (cda) =>{    
+  const SendOrden = () =>{    
   
     let dato = item 
-    dato.cantidad=cda.cantidad 
+    dato.cantidad=cantidad 
     let arr = [...carrito, dato]
     setcarrito(arr)
     setVisible(false) 
-    setcantidad('') 
+    setcantidad(1) 
     GLOBAL.carrito = arr  
     console.log(arr)
     return
-        
-    
+      
   }
+
+  const CancelOrden = () => (
+    setVisible(false),
+    setcantidad(1)
+  )
 
   const renderItem = ({ item }) => (
 
@@ -99,9 +93,29 @@ export const ListProducts = () => {
       accessoryRight={renderItemAccessory}
     />
 
-
   );
 
+
+  const amunetar = () => {
+    
+   let number = cantidad 
+   number = number +1
+   setcantidad(number)
+   let mul = item.precio * number
+   setTotal(mul)
+  
+  }
+
+  const disminuir = () => {
+   let number = 0 
+   number = cantidad - 1
+   setcantidad(number)
+   let mul = item.precio * number
+   setTotal(mul)
+
+  }
+
+ 
   return (
     <React.Fragment>
       {isLoading ? <ActivityIndicator /> : (
@@ -120,22 +134,26 @@ export const ListProducts = () => {
 
           <Modal visible={visible}>
             <Card style={[styles2.Modal, { backgroundColor: "#AAC2F4"}]} level='1' disabled={true}>
-            <Text style={{color:"black", textTransform:"uppercase", marginBottom:10}}>{title}</Text>   
-             
-              <Input style={{borderRadius: 10, margin:15}}
-                placeholder='Cantidad'
-                value={cantidad}
-                onChangeText={nextValue => setcantidad(nextValue)}
-              />
 
-            <Text style={{color:"black", textTransform:"uppercase", marginBottom:15, textAlign:"center"}}>${item.precio}</Text> 
+            <Text style={{color:"black", fontSize:15, textAlign:"center", textTransform:"uppercase", marginBottom:30}}>{title}</Text>  
 
-             <View style={{display:"flex", flexDirection:"row"}}>
-              <Button style={{flex:1, marginHorizontal:5}} onPress={()=>SendOrden({cantidad})}>
-                Acpetar
-              </Button>
-               <Button style={{flex:1, marginHorizontal:5}} onPress={() => setVisible(false)}>
+         
+              <View style={{display:"flex", flexDirection:"row"}} >
+              <Button style={{flex:1, marginHorizontal:5, borderRadius:10, backgroundColor:"#72DD5F", boxShadow: "0px 6px 0px #324CC2, 0px 3px 15px rgba(0,0,0,.4)"}} onPress={disminuir}>-</Button>
+                <Text style={{flex:2, textAlign:"center", fontSize:20}}>
+                  {cantidad}
+                </Text>               
+                <Button style={{flex:1, marginHorizontal:5, borderRadius:10, backgroundColor:"#72DD5F", boxShadow: "0px 6px 0px #324CC2, 0px 3px 15px rgba(0,0,0,.4)"}} onPress={amunetar}>+</Button>
+              </View>
+
+            <Text style={{color:"black", fontSize:20, textTransform:"uppercase", marginBottom:40, textAlign:"center"}}>${total}</Text> 
+
+             <View style={{display:"flex", flexDirection:"row"}}>             
+               <Button style={{flex:1, marginHorizontal:5, borderRadius:12, boxShadow: "0px 6px 0px #324CC2, 0px 3px 15px rgba(0,0,0,.4)"}} onPress={() => CancelOrden()}>
                 Cancelar
+              </Button>
+              <Button style={{flex:1, marginHorizontal:5, borderRadius:12, boxShadow: "0px 6px 0px #324CC2, 0px 3px 15px rgba(0,0,0,.4)"}} onPress={()=>SendOrden()}>
+                Aceptar
               </Button>
               </View>              
             
@@ -153,16 +171,10 @@ export const ListProducts = () => {
 
 const styles = StyleSheet.create({
   container: {
-    maxHeight: 400,
+    maxHeight: "35%",
     cursor: "pointer"
   },
-  button:{
-    width:"40%",
-    display:"flex",
-    flexDirection:"row",
-    margin:5
-
-  }
+ 
 
 });
 

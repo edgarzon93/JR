@@ -19,7 +19,7 @@ export const HomeScreen = ({ navigation }) => {
         <Image
           style={{
             resizeMode: "contain",
-            height: 50,
+            height: 40,
           }}
           source={require("./assets/JR.png")}
         />
@@ -28,7 +28,7 @@ export const HomeScreen = ({ navigation }) => {
 
         <Divider />
         <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Button style={styles.button} onPress={navigateDetails}>Continuar compra</Button>
+          <Button style={styles.button} onPress={navigateDetails}>CONTINUAR COMPRA</Button>
         </Layout>
       </SafeAreaView>
 
@@ -41,7 +41,10 @@ const styles = StyleSheet.create({
     flex: 1,     
   },
   button:{
-    borderRadius: 20
+    borderRadius: 15,
+    width:"90%",
+    backgroundColor: "#72DD5F",
+    boxShadow: "0px 6px 0px #324CC2, 0px 3px 15px rgba(0,0,0,.4)"
   }
 
 });
